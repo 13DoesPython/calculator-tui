@@ -12,6 +12,7 @@ A terminal calculator for arithmetic, powers, and common math functions.
 - Reuse the previous result with `ans`
 - Clear memory with `clear` or exit with `quit`
 - Help menu with `help` command
+- History feature to view previous calculations with `history` command
 
 ## Get the files
 
