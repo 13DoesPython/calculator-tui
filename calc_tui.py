@@ -39,6 +39,32 @@ def evaluate_expression(expression: str):
     return result
 
 LAST_ANS = 0.0
+expression_history = {}
+
+def history_menu():
+    if sys.stdout.isatty():
+        sys.stdout.write("\x1b[3J")
+        sys.stdout.flush()
+    os.system("cls" if os.name == "nt" else "clear")
+    print(Fore.CYAN + "=" * 50)
+    print(Style.BRIGHT + Fore.CYAN + "Calculation History".center(50))
+    print(Fore.CYAN + "=" * 50)
+    
+    if not expression_history:
+        print("No calculations yet!")
+    else:
+        for index, (expr, result) in enumerate(expression_history.items()):
+            display_result = result
+            if isinstance(display_result, float):
+                if display_result.is_integer():
+                    display_result = int(display_result)
+                else:
+                    display_result = round(display_result, 6)
+
+            print(Fore.YELLOW + f"{index + 1}. " + Fore.RESET + f"{expr} = " + Fore.GREEN + f"{display_result}")
+    
+    print(Fore.CYAN + "=" * 50)
+    input(Fore.CYAN + "Press Enter to return to the main menu...")
 
 def help_menu():
     if sys.stdout.isatty():
@@ -67,13 +93,14 @@ def print_menu():
     print(Fore.CYAN + "=" * 50)
     print(Style.BRIGHT + Fore.CYAN + "Advanced terminal calculator".center(50))
     print(Fore.CYAN + "=" * 50)
-    print("- Basic arithmetic equations! '1 + 1 / 2'")
-    print("- Power and square root! '4^2 + sqrt(16)'")
-    print("- Math functions! sin(), cos(), tan(), log()")
-    print("- Irrational numbers! pi and e")
-    print("- Commands! 'quit' to quit and 'clear' to clear memory")
-    print("- Use 'ans' to go back to the last answer!")
-    print("- Full help guide with command 'help'")
+    print("- Arithmetic: Use +, -, *, / and parentheses. Example: (1 + 2) * 3")
+    print("- Powers and roots: Use ^ and sqrt(). Example: 4^2 + sqrt(16)")
+    print("- Factorials: Use factorial(). Example: factorial(5)")
+    print("- Trigonometry: Use sin(), cos(), and tan() with radians")
+    print("- Logarithms and constants: Use log(), pi, and e")
+    print("- Memory and history: Use 'ans' for the last result or 'history' to review calculations")
+    print("- Commands: Type 'help' for guidance, 'clear' to reset memory, or 'quit' to exit")
+    print("- README: read the README.md file for additional info.")
     print(Fore.CYAN + "=" * 50)
 
 def main():
@@ -102,7 +129,12 @@ def main():
                 input(Fore.CYAN + "Press Enter to return to the main menu...")
                 continue
             
+            if user_input == "history":
+                history_menu()
+                continue
+
             result = evaluate_expression(user_input)
+            expression_history[user_input] = result
             LAST_ANS = result
 
             display_result = result
