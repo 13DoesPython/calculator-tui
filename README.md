@@ -35,6 +35,9 @@ At the prompt, enter an equation and press Enter. For example, `2 + 3` returns `
 
 ## Version history
 
+- 0.2.6:
+    - Bug fixes and improvements
+    - `clear` command now resets the history as well
 - 0.2.5: Added history feature to view previous calculations
 - 0.2.1: Bug fixes and improvements
 - 0.2.0:

@@ -39,21 +39,21 @@ def evaluate_expression(expression: str):
     return result
 
 LAST_ANS = 0.0
-expression_history = {}
+expression_history = []
 
 def history_menu():
     if sys.stdout.isatty():
         sys.stdout.write("\x1b[3J")
         sys.stdout.flush()
     os.system("cls" if os.name == "nt" else "clear")
-    print(Fore.CYAN + "=" * 50)
-    print(Style.BRIGHT + Fore.CYAN + "Calculation History".center(50))
-    print(Fore.CYAN + "=" * 50)
+    print(Fore.CYAN + "=" * 100)
+    print(Style.BRIGHT + Fore.CYAN + "Calculation History".center(100))
+    print(Fore.CYAN + "=" * 100)
     
     if not expression_history:
         print("No calculations yet!")
     else:
-        for index, (expr, result) in enumerate(expression_history.items()):
+        for index, (expr, result) in enumerate(expression_history, start=1):
             display_result = result
             if isinstance(display_result, float):
                 if display_result.is_integer():
@@ -61,9 +61,9 @@ def history_menu():
                 else:
                     display_result = round(display_result, 6)
 
-            print(Fore.YELLOW + f"{index + 1}. " + Fore.RESET + f"{expr} = " + Fore.GREEN + f"{display_result}")
+            print(Fore.YELLOW + f"{index}. " + Fore.RESET + f"{expr} = " + Fore.GREEN + f"{display_result}")
     
-    print(Fore.CYAN + "=" * 50)
+    print(Fore.CYAN + "=" * 100)
     input(Fore.CYAN + "Press Enter to return to the main menu...")
 
 def help_menu():
@@ -71,9 +71,9 @@ def help_menu():
         sys.stdout.write("\x1b[3J")
         sys.stdout.flush()
     os.system("cls" if os.name == "nt" else "clear")
-    print(Fore.CYAN + "=" * 50)
-    print(Style.BRIGHT + Fore.CYAN + "Help Guide".center(50))
-    print(Fore.CYAN + "=" * 50)
+    print(Fore.CYAN + "=" * 100)
+    print(Style.BRIGHT + Fore.CYAN + "Help Guide".center(100))
+    print(Fore.CYAN + "=" * 100)
     print("- Basic arithmetic: Use +, -, *, / for addition, subtraction, multiplication, and division.")
     print("- Power: Use ^ for exponentiation. Example: 2^3 = 8")
     print("- Square root: Use sqrt(). Example: sqrt(16) = 4")
@@ -82,26 +82,27 @@ def help_menu():
     print("- Logarithm: Use log() for natural logarithm. Example: log(e) = 1")
     print("- Constants: Use pi and e for mathematical constants.")
     print("- Memory: Use 'ans' to refer to the last answer.")
-    print("- Commands: Type 'quit' to exit or 'clear' to reset memory.")
-    print(Fore.CYAN + "=" * 50)
+    print("- Commands: Type 'quit' to exit or 'clear' to reset memory and history.")
+    print("- History: Type 'history' to view past calculations.")
+    print(Fore.CYAN + "=" * 100)
 
 def print_menu():
     if sys.stdout.isatty():
         sys.stdout.write("\x1b[3J")
         sys.stdout.flush()
     os.system("cls" if os.name == "nt" else "clear")
-    print(Fore.CYAN + "=" * 50)
-    print(Style.BRIGHT + Fore.CYAN + "Advanced terminal calculator".center(50))
-    print(Fore.CYAN + "=" * 50)
+    print(Fore.CYAN + "=" * 100)
+    print(Style.BRIGHT + Fore.CYAN + "Advanced terminal calculator".center(100))
+    print(Fore.CYAN + "=" * 100)
     print("- Arithmetic: Use +, -, *, / and parentheses. Example: (1 + 2) * 3")
     print("- Powers and roots: Use ^ and sqrt(). Example: 4^2 + sqrt(16)")
     print("- Factorials: Use factorial(). Example: factorial(5)")
     print("- Trigonometry: Use sin(), cos(), and tan() with radians")
     print("- Logarithms and constants: Use log(), pi, and e")
     print("- Memory and history: Use 'ans' for the last result or 'history' to review calculations")
-    print("- Commands: Type 'help' for guidance, 'clear' to reset memory, or 'quit' to exit")
+    print("- Commands: Type 'help' for guidance, 'clear' to reset memory and history, or 'quit' to exit")
     print("- README: read the README.md file for additional info.")
-    print(Fore.CYAN + "=" * 50)
+    print(Fore.CYAN + "=" * 100)
 
 def main():
     global LAST_ANS
@@ -121,7 +122,8 @@ def main():
 
             if user_input == "clear":
                 LAST_ANS = 0
-                message = "Memory cleared!"
+                expression_history.clear()
+                message = "Memory and history cleared!"
                 continue
 
             if user_input == "help":
@@ -134,7 +136,7 @@ def main():
                 continue
 
             result = evaluate_expression(user_input)
-            expression_history[user_input] = result
+            expression_history.append((user_input, result))
             LAST_ANS = result
 
             display_result = result
