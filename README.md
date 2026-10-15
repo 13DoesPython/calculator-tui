@@ -12,6 +12,7 @@ A terminal calculator for arithmetic, powers, and common math functions.
 - Reuse the previous result with `ans`
 - Clear memory with `clear` or exit with `quit`
 - Help menu with `help` command
+- Angle mode toggle between degrees and radians with `mode` command
 - History feature to view previous calculations with `history` command
 
 ## Get the files
@@ -35,6 +36,10 @@ At the prompt, enter an equation and press Enter. For example, `2 + 3` returns `
 
 ## Version history
 
+- 0.3.0:
+    - Added degree and radian modes for `sin()`, `cos()`, and `tan()`; the calculator starts in degree mode
+    - Use `mode` to switch modes, or choose one directly with `mode deg` or `mode rad`
+    - Updated the help menu and main screen to show angle mode information
 - 0.2.6:
     - Bug fixes and improvements
     - `clear` command now resets the history as well

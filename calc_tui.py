@@ -19,9 +19,9 @@ def evaluate_expression(expression: str):
             raise ValueError(f"Invalid char: '{char}")
 
     safe_dict = {
-        "sin": math.sin,
-        "cos": math.cos,
-        "tan": math.tan,
+        "sin": lambda x: math.sin(math.radians(x) if mode == "deg" else x),
+        "cos": lambda x: math.cos(math.radians(x) if mode == "deg" else x),
+        "tan": lambda x: math.tan(math.radians(x) if mode == "deg" else x),
         "sqrt": math.sqrt,
         "log": math.log,
         "pi": math.pi,
@@ -40,6 +40,7 @@ def evaluate_expression(expression: str):
 
 LAST_ANS = 0.0
 expression_history = []
+mode = "deg"  # Default mode is degrees
 
 def history_menu():
     if sys.stdout.isatty():
@@ -83,6 +84,7 @@ def help_menu():
     print("- Constants: Use pi and e for mathematical constants.")
     print("- Memory: Use 'ans' to refer to the last answer.")
     print("- Commands: Type 'quit' to exit or 'clear' to reset memory and history.")
+    print("- Angle mode: Type 'mode' to toggle between degrees and radians.")
     print("- History: Type 'history' to view past calculations.")
     print(Fore.CYAN + "=" * 100)
 
@@ -95,17 +97,17 @@ def print_menu():
     print(Style.BRIGHT + Fore.CYAN + "Advanced terminal calculator".center(100))
     print(Fore.CYAN + "=" * 100)
     print("- Arithmetic: Use +, -, *, / and parentheses. Example: (1 + 2) * 3")
-    print("- Powers and roots: Use ^ and sqrt(). Example: 4^2 + sqrt(16)")
-    print("- Factorials: Use factorial(). Example: factorial(5)")
+    print("- Powers, roots, and factorials: Use ^, sqrt(), and factorial()")
     print("- Trigonometry: Use sin(), cos(), and tan() with radians")
     print("- Logarithms and constants: Use log(), pi, and e")
-    print("- Memory and history: Use 'ans' for the last result or 'history' to review calculations")
-    print("- Commands: Type 'help' for guidance, 'clear' to reset memory and history, or 'quit' to exit")
-    print("- README: read the README.md file for additional info.")
+    print("- Angle mode: Type 'mode' to toggle between degrees and radians")
+    print("- Memory, history, and commands: Use 'ans', 'history', 'help', 'clear', or 'quit'")
+    print(Fore.CYAN + "=" * 100)
+    print("Mode: " + Fore.YELLOW + f"{mode.upper()}" + Fore.CYAN + " | Last Answer: " + Fore.GREEN + f"{LAST_ANS}")
     print(Fore.CYAN + "=" * 100)
 
 def main():
-    global LAST_ANS
+    global LAST_ANS, mode
     message = ""
 
     while True:
@@ -135,6 +137,16 @@ def main():
                 history_menu()
                 continue
 
+            if user_input == "mode":
+                mode = "rad" if mode == "deg" else "deg"
+                message = f"Angle mode changed to {mode.upper()}."
+                continue
+
+            if user_input in {"mode deg", "mode rad"}:
+                mode = user_input.split()[1]
+                message = f"Angle mode changed to {mode.upper()}."
+                continue
+
             result = evaluate_expression(user_input)
             expression_history.append((user_input, result))
             LAST_ANS = result
@@ -145,7 +157,7 @@ def main():
                     display_result = int(display_result)
                 else:
                     display_result = round(display_result, 6)
-                
+
             message = f"Result: {display_result}"
 
         except EOFError:
