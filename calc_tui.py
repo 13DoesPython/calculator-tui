@@ -1,3 +1,4 @@
+import ast
 import math
 import os
 import sys
@@ -79,12 +80,12 @@ def help_menu():
     print("- Power: Use ^ for exponentiation. Example: 2^3 = 8")
     print("- Square root: Use sqrt(). Example: sqrt(16) = 4")
     print("- Factorial: Use factorial(). Example: factorial(5) = 120")
-    print("- Trigonometric functions: sin(), cos(), tan() accept radians. Example: sin(pi/2) = 1")
+    print("- Trigonometric functions: sin(), cos(), tan() use the current angle mode. Example: sin(90) in DEG mode = 1")
     print("- Logarithm: Use log() for natural logarithm. Example: log(e) = 1")
     print("- Constants: Use pi and e for mathematical constants.")
     print("- Memory: Use 'ans' to refer to the last answer.")
     print("- Commands: Type 'quit' to exit or 'clear' to reset memory and history.")
-    print("- Angle mode: Type 'mode' to toggle between degrees and radians.")
+    print("- Angle mode: Type 'mode' to toggle or 'mode deg' / 'mode rad' to set it explicitly.")
     print("- History: Type 'history' to view past calculations.")
     print(Fore.CYAN + "=" * 100)
 
@@ -98,9 +99,9 @@ def print_menu():
     print(Fore.CYAN + "=" * 100)
     print("- Arithmetic: Use +, -, *, / and parentheses. Example: (1 + 2) * 3")
     print("- Powers, roots, and factorials: Use ^, sqrt(), and factorial()")
-    print("- Trigonometry: Use sin(), cos(), and tan() with radians")
+    print("- Trigonometry: Use sin(), cos(), and tan() with the current angle mode")
     print("- Logarithms and constants: Use log(), pi, and e")
-    print("- Angle mode: Type 'mode' to toggle between degrees and radians")
+    print("- Angle mode: Type 'mode' to toggle or 'mode deg' / 'mode rad'")
     print("- Memory, history, and commands: Use 'ans', 'history', 'help', 'clear', or 'quit'")
     print(Fore.CYAN + "=" * 100)
     print("Mode: " + Fore.YELLOW + f"{mode.upper()}" + Fore.CYAN + " | Last Answer: " + Fore.GREEN + f"{LAST_ANS}")
@@ -125,7 +126,8 @@ def main():
             if user_input == "clear":
                 LAST_ANS = 0
                 expression_history.clear()
-                message = "Memory and history cleared!"
+                mode = "deg"  # Reset mode to degrees
+                message = "Memory and history cleared. Angle mode reset to DEGREES."
                 continue
 
             if user_input == "help":

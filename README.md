@@ -36,6 +36,7 @@ At the prompt, enter an equation and press Enter. For example, `2 + 3` returns `
 
 ## Version history
 
+- 0.3.1: `clear` command now resets angle mode to degree mode as well
 - 0.3.0:
     - Added degree and radian modes for `sin()`, `cos()`, and `tan()`; the calculator starts in degree mode
     - Use `mode` to switch modes, or choose one directly with `mode deg` or `mode rad`
