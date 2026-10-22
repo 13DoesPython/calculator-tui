@@ -123,6 +123,24 @@ def main():
             if user_input == "quit":
                 sys.exit(0)
 
+            if user_input == "":
+                message = "Error: No input provided!"
+                continue
+
+            if user_input.startswith("recall "):
+                number_string = user_input.removeprefix("recall ").strip()
+
+                if not number_string.isdigit():
+                    message = "Error: Use recall <number>."
+                    continue
+                
+                index = int(number_string) - 1
+                if not 0 <= index < len(expression_history):
+                    message = "Error: no expression with that history number."
+                    continue
+
+                user_input = expression_history[index][0]     
+
             if user_input == "clear":
                 LAST_ANS = 0
                 expression_history.clear()
