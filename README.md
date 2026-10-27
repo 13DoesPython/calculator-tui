@@ -33,10 +33,13 @@ From inside the cloned `advanced-calculator` folder, run `calc_tui.py`:
 python calc_tui.py
 ```
 
-At the prompt, enter an equation and press Enter. For example, `2 + 3` returns `5`. Use `ans` to reuse the last result, `clear` to reset memory, or `quit` to exit. The program requires Python 3.10 or newer and Colorama. Note that the program does not support implicit multiplication, so `2(3)` is invalid; use `2 * 3` instead. Also the equation you type will be solved by the BEDMAS order of operations rule. Lastly, the program does not support complex numbers, so `sqrt(-1)` will return an error.
+At the prompt, enter an equation and press Enter. For example, `2 + 3` returns `5`. Use `ans` to reuse the last result, `clear` to reset memory, or `quit` to exit. The program requires Python 3.10 or newer and Colorama. The equation you type will be solved by the BEDMAS order of operations rule, and the program does not support complex numbers, so `sqrt(-1)` will return an error.
 
 ## Version history
 
+- 0.4.0:
+    - added implicit multiplication support, so `2(3)` is now valid and returns `6`
+    - Bug fixes and improvements
 - 0.3.5:
     - Added `recall <index>` command to recall previous calculations from history
     - Added an error if no input is provided

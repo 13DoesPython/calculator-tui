@@ -6,6 +6,56 @@ from colorama import Fore, Style, init
 
 init(autoreset=True)
 
+def add_implicit_multiplication(expr: str) -> str:
+    result = []
+    i = 0
+
+    def is_number(ch):
+        return ch.isdigit() or ch == "."
+
+    def is_name(ch):
+        return ch.isalpha()
+
+    while i < len(expr):
+        ch = expr[i]
+        result.append(ch)
+
+        if i + 1 >= len(expr):
+            break
+
+        nxt = expr[i + 1]
+
+        left_can_end_value = (
+            ch.isdigit()
+            or ch == ")"
+            or ch == "."
+            or is_name(ch)
+        )
+
+        right_can_start_value = (
+            nxt.isdigit()
+            or nxt == "("
+            or nxt == "."
+            or is_name(nxt)
+        )
+
+        if left_can_end_value and right_can_start_value:
+            # prevent sin(30) -> sin*(30)
+            if is_name(ch) and nxt == "(":
+                pass
+            elif ch not in "+-*/^" and nxt not in "+-*/^":
+                result.append("*")
+
+        i += 1
+
+    return "".join(result)
+
+def normalize_expression(expr: str) -> str:
+    expr = expr.strip().lower()
+    expr = add_implicit_multiplication(expr)
+    expr = expr.replace("^", "**")
+    return expr
+
 def evaluate_expression(expression: str):
     allowed_chars = set("0123456789+-*/().,^ ")
     words = "".join(c if c.isalpha() else " " for c in expression).split()
@@ -31,8 +81,9 @@ def evaluate_expression(expression: str):
         "ans": LAST_ANS
     }
 
-    evaluated_expression = expression.replace("^", "**")
-    result = eval(evaluated_expression, {"__builtins__": {}}, safe_dict)
+    expression = normalize_expression(expression)
+    expression = expression.replace("^", "**")
+    result = eval(expression, {"__builtins__": {}}, safe_dict)
 
     if callable(result):
         raise ValueError("Call the function with parentheses, like sin(pi / 2).")
